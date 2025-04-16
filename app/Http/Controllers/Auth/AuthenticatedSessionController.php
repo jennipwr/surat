@@ -34,6 +34,33 @@ class AuthenticatedSessionController extends Controller
         return view('auth.login-tu');
     }
 
+    public function createAdmin(): View
+    {
+        return view('auth.login-admin');
+    }
+
+    public function storeAdmin(Request $request)
+    {
+        try {
+            $request->validate([
+                'nik' => ['required'],
+                'password' => ['required'],
+            ]);
+
+
+            if (Auth::attempt(['nik' => $request->nik, 'password' => $request->password])) {
+                $request->session()->regenerate();
+                return $this->redirectToDashboard();
+            }
+
+            return back()->withErrors([
+                'nik' => 'NIK atau Password Salah.',
+            ]);
+        } catch (\Exception $e) {
+            return dd($e->getMessage());
+        }
+    }
+
     /**
      * Handle an incoming authentication request.
      */
@@ -53,6 +80,7 @@ class AuthenticatedSessionController extends Controller
                 'nrp' => ['required'],
                 'password' => ['required'],
             ]);
+
 
             if (Auth::attempt(['nrp' => $request->nrp, 'password' => $request->password])) {
                 $request->session()->regenerate();
@@ -115,13 +143,20 @@ class AuthenticatedSessionController extends Controller
 
         if ($user->role == 'mahasiswa') {
             return redirect()->route('mahasiswa.dashboard');
-        } elseif ($user->role == 'kaprodi') {
-            return redirect()->route('kaprodi.dashboard');
-        } elseif ($user->role == 'tu') {
-            return redirect()->route('tu.dashboard');
-        }
+        } elseif ($user->role == 'karyawan') {
+            $karyawan = $user->karyawan;
 
-        return redirect('/home');
+            if ($karyawan) {
+                if ($karyawan->jabatan == 'kaprodi') {
+                    return redirect()->route('kaprodi.dashboard');
+                } elseif ($karyawan->jabatan == 'tu') {
+                    return redirect()->route('tu.dashboard');
+                }
+            }
+        } elseif ($user->role == 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+        return redirect()->route('home');
     }
 
 

@@ -24,14 +24,14 @@
                                 <img src=" {{ asset ('assets/images/logos/dark-logo.svg') }}" width="180" alt="">
                             </a>
                             <p class="text-center">Solusi Modern Pengelolaan Surat</p>
-                            <form method="POST" action="{{ route('login.mahasiswa.post') }}">
+                            <form method="POST" action="{{ route('login.admin.post') }}">
                                 @csrf
                                 <div class="mb-3">
-                                    <label for="nrp" class="form-label">NRP</label>
-                                    <input type="text" name="nrp" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label for="nik" class="form-label">NIK (Admin)</label>
+                                    <input type="text" name="nik" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                                 </div>
                                 <div class="mb-4">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
+                                    <label for="password" class="form-label">Password</label>
                                     <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                                 </div>
                                 @if ($errors->any())

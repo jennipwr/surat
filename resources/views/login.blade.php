@@ -28,6 +28,12 @@
                 <p>TU</p>
             </a>
         </div>
+        <div class="user-card">
+            <a href=" {{ route ('login.admin') }}">
+                <img src="{{ asset ('assets/images/login/user.png') }}" alt="Admin">
+                <p>Admin</p>
+            </a>
+        </div>
     </div>
 </div>
 </body>
